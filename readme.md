@@ -68,7 +68,7 @@ If you're using VS Code, it's also a good idea to install
 
 Node has
 [a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html),
-and since Deno v1.15 a large portion of it is available in Deno.
+and [since Deno v1.15 a large portion of it is available in Deno](https://deno.land/manual@v1.26.0/node/std_node).
 
 The Node API is available in Deno by importing from the `node` module in the
 Deno standard library.
@@ -91,9 +91,14 @@ the system.
 ```ts
 // express-main.ts
 import express from "npm:express";
+import type {
+  Request,
+  Response,
+} from "https://esm.sh/@types/express/index.d.ts";
+
 const app = express();
 
-app.get("/", function (req, res) {
+app.get("/", function (_req: Request, res: Response<string>) {
   res.send("Hello World");
 });
 
@@ -101,6 +106,7 @@ app.listen(3000);
 console.log("listening on http://localhost:3000/");
 ```
 
+- Adding missing types
 - Using with projects that have `node_modules` already
 - Importing into `node_modules` (for vendoring and compat)
 - Reloading modules (all, some, or one)
