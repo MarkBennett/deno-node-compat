@@ -27,10 +27,17 @@
 
 ## Getting started
 
-Before you begin, make sure you have Deno installed. You can install it with the
+Before you begin, make sure you have Deno installed. You can install it on Mac and Linux with the
 following command:
 
 ```bash
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+Or with PowerShell on Windows:
+
+```powershell
+irm https://deno.land/install.ps1 | iex
 ```
 
 Then initialize a new project:
@@ -58,14 +65,20 @@ If you're using VS Code, it's also a good idea to install [the official Deno ext
 
 ## Using the Node API
 
-Node defines a large api, and since Deno v1.15 a large portion of it is
+Node has [a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html), and since Deno v1.15 a large portion of it is
 available in Deno.
 
 The Node API is available in Deno by importing from the `node` module in the
 Deno standard library.
 
 ```ts
+// node-stdlib.ts
 import { readFileSync } from "https://deno.land/std@0.158.0/node/fs.ts";
+import { stdout } from "https://deno.land/std@0.158.0/node/process.ts";
+
+const data = readFileSync("hello.txt", "utf8");
+
+stdout.write(data);
 ```
 
 ## Using packages from npm
