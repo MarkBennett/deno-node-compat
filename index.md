@@ -27,8 +27,8 @@
 
 ## Getting started
 
-Before you begin, make sure you have Deno installed. You can install it on Mac and Linux with the
-following command:
+Before you begin, make sure you have Deno installed. You can install it on Mac
+and Linux with the following command:
 
 ```bash
 curl -fsSL https://deno.land/install.sh | sh
@@ -61,12 +61,14 @@ You can also use `deno task` to run scripts defined in a `deno.json` file.
 deno task dev
 ```
 
-If you're using VS Code, it's also a good idea to install [the official Deno extension](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno).
+If you're using VS Code, it's also a good idea to install
+[the official Deno extension](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno).
 
 ## Using the Node API
 
-Node has [a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html), and since Deno v1.15 a large portion of it is
-available in Deno.
+Node has
+[a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html),
+and since Deno v1.15 a large portion of it is available in Deno.
 
 The Node API is available in Deno by importing from the `node` module in the
 Deno standard library.
@@ -83,6 +85,9 @@ stdout.write(data);
 
 ## Using packages from npm
 
+Import packages using the `npm` schema. They are downloaded and cached across
+the system.
+
 ```ts
 // express-main.ts
 import express from "npm:express";
@@ -95,6 +100,10 @@ app.get("/", function (req, res) {
 app.listen(3000);
 console.log("listening on http://localhost:3000/");
 ```
+
+- Using with projects that have `node_modules` already
+- Importing into `node_modules` (for vendoring and compat)
+- Reloading modules (all, some, or one)
 
 ## Creating apps
 
