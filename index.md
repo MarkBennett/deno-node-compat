@@ -25,7 +25,15 @@
 # Package Management
 * 
 
-# Running scripts from the command line
+# Running Node code with Deno
+
+## Creating apps
+
+Use the `deno run` with an `npm:<package-name>[@<version-requirement>][/<binary-name>]` specifier to run a Node package binary.
+
+```bash
+deno run -A --unstable npm:create-vite-extra
+```
 
 # How to write code for both Node and Deno
 
