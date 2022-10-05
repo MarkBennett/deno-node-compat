@@ -68,7 +68,8 @@ If you're using VS Code, it's also a good idea to install
 
 Node has
 [a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html),
-and [since Deno v1.15 a large portion of it is available in Deno](https://deno.land/manual@v1.26.0/node/std_node).
+and
+[since Deno v1.15 a large portion of it is available in Deno](https://deno.land/manual@v1.26.0/node/std_node).
 
 The Node API is available in Deno by importing from the `node` module in the
 Deno standard library.
@@ -119,11 +120,17 @@ Node package binary.
 
 ```bash
 deno run -A --unstable npm:create-vite-extra
-
+deno run -A --unstable npm:cowsay "Hello!"
+deno run -A --unstable npm:cowsay@1.5.0/cowthink "What to eat?"
 deno run -A --unstable npm:eslint your_file.js
 ```
 
-# How to write code for both Node and Deno
+This is basically the same as using `npx` in Node since nothing needs to be
+downloaded or installed first.
+
+# Running Deno Code In Node
+
+## Deploy to npm without them even knowing
 
 # See Also
 
