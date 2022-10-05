@@ -14,14 +14,22 @@
 
 # Comparing Nodejs and Deno
 
-- Node is a JavaScript runtime built on Chrome's V8 JavaScript engine. Same for
-  Deno!
-- Node = Common.js + E5 modules, Deno = ES modules
-- Node has npm and node_modules, Deno has imports and imports_map (like the
-  browser)
-- Node has a custom API, Deno uses browser APIs whenever available
-- Node gives your app full system access, Deno gives you a sandbox and only what
-  you need
+Deno is a new project from Ryan Dhal, the original author of Node.
+
+|                       | Node | Deno |
+| --------------------- | ---- | ---- |
+| V8 engine             | ✅    | ✅    |
+| ES Modules            | 🟨 *  | ✅    |
+| Common.js             | ✅    | No   |
+| Web APIs              | No   | ✅    |
+| Sandbox / Permissions | No   | ✅    |
+| TypeScript            | No   | ✅    |
+| Linter                | No   | ✅    |
+| Formatter             | No   | ✅    |
+| npm / node_modules    | ✅    | No   |
+| Bundler               | No   | No   |
+
+- Partial support with .mjs files
 
 # Running Node code with Deno
 
@@ -127,6 +135,20 @@ deno run -A --unstable npm:eslint your_file.js
 
 This is basically the same as using `npx` in Node since nothing needs to be
 downloaded or installed first.
+
+## Running project scripts
+
+When you're using node, you can run scripts defined in your `package.json` file.
+
+```bash
+npm run dev
+```
+
+With Deno, you run scripts defined in a `deno.json` file.
+
+```bash
+deno task dev
+```
 
 # Running Deno Code In Node
 
