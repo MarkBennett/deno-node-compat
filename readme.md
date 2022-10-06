@@ -12,6 +12,10 @@
   \/_____/ \/__________/\/_/     \/_/ \/_________/                 \/_/     \/_/ \/_________/     \/_____/ \/__________/
 ```
 
+---
+
+# An Gentle Introduction to Using Node Packages in Deno
+
 ## By @MarkBennett
 
 - Slides available at https://github.com/MarkBennett/deno-node-compat
@@ -51,7 +55,7 @@ Learn more at [deno.land](https://deno.land/)
 
 # Hurdles To Adoption
 
-1. Most devs are happy with node
+1. Most devs know Node
 2. Learning something new is hard
 3. The node/npm ecosystem is much bigger than Deno's
 
@@ -72,16 +76,17 @@ Node and npm work seamlessly with Deno.
 
 ## Using packages from npm
 
-Use `npm` packages is easy!
+Using `npm` packages is easy!
 
-Just import packages using the `npm` schema and you're good to go! Never type
-`npm install --save` again!
+Just import packages using the `npm:` url schema and you're good to go! Never
+type `npm install --save` again!
 
 ```ts
 import ?? from "npm:<package-name>[@<version-requirement>]";
 ```
 
-They are downloaded the first time you import them and cached across the system.
+Packages are downloaded the first time you import them and cached across the
+system.
 
 ---
 
@@ -129,11 +134,22 @@ you.
 
 ---
 
-## Creating apps
+## Running Node binaries
+
+In Deno you run scripts from a url:
+
+```bash
+deno run main.ts
+deno run https://deno.land/std/examples/welcome.ts
+```
+
+---
+
+## Running Node binaries
 
 Use `deno run` with an
-`npm:<package-name>[@<version-requirement>][/<binary-name>]` specifier to run a
-Node package binary.
+`npm:<package-name>[@<version-requirement>][/<binary-name>]` url to run a Node
+package binary.
 
 ```bash
 deno run -A --unstable npm:create-vite-extra
@@ -145,15 +161,44 @@ deno run -A --unstable npm:eslint your_file.js
 This is basically the same as using `npx` in Node since nothing needs to be
 downloaded or installed first.
 
+- NOTE: We need to add permissions `-A` and the `--unstable` flag to run these
+  scripts.
+
 ---
 
-## Problems you'll run into
+## Replacing Node scripts
+
+You can also use `deno task` to run scripts defined in a `deno.jsonc` file.
+
+```json
+// deno.jsonc
+{
+  "tasks": {
+    "fmt": "deno fmt",
+    "lint": "deno lint",
+    "test": "deno test -A",
+    "slides": "slides readme.md"
+  }
+}
+```
+
+Start the slides with:
+
+```bash
+deno task slides
+```
+
+This works like the scripts defined in `package.json` in Node.
 
 ---
 
-## Problems you'll run into
+# Problems You May Run Into
 
-### Missing types
+---
+
+# Problems You May Run Into
+
+## Missing types
 
 Most packages on npm are missing TypeScript types. You can use the `@types` npm
 packages to install third-party type definitions.
@@ -173,11 +218,13 @@ https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ---
 
-## Problems you'll run into
+# Problems You May Run Into
 
-### Missing NAPI for loading native modules
+## Missing NAPI for loading native modules
 
-Some popular packages like `bcrypt` and `sharp` use native modules.
+Some popular packages like `bcrypt` and `sharp` use native Node modules. These
+let them access C libraries and perform operations that are not possible or
+optimized in JavaScript.
 
 These aren't currently supported in Deno, but work is underway to add support
 and the first version was
@@ -187,9 +234,9 @@ I'm guessing this will be a headline feature in Deno v1.27.
 
 ---
 
-## Problems you'll run into
+# Problems You May Run Into
 
-### Packages expect `node_modules`
+## Packages expect `node_modules`
 
 Some packages hard code `node_modules` into their source, and sometimes you want
 to vendor packages for deploying to production.
@@ -230,6 +277,8 @@ You can report issues and broken packages on GitHub.
 
 ---
 
+# What's Next
+
 ## Getting started
 
 Before you begin, make sure you have Deno installed. You can install it on Mac
@@ -248,6 +297,8 @@ irm https://deno.land/install.ps1 | iex
 See https://deno.land/#installation for more detials.
 
 ---
+
+# What's Next
 
 ## Getting started
 
@@ -268,17 +319,7 @@ deno fmt
 
 ---
 
-## Getting started
-
-You can also use `deno task` to run scripts defined in a `deno.json` file.
-
-```bash
-deno task slides
-```
-
-This works like the scripts defined in `package.json` in Node.
-
----
+# What's Next
 
 ## Getting started
 
