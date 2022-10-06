@@ -12,6 +12,8 @@
   \/_____/ \/__________/\/_/     \/_/ \/_________/                 \/_/     \/_/ \/_________/     \/_____/ \/__________/
 ```
 
+---
+
 # Comparing Nodejs and Deno
 
 Deno is a new project from Ryan Dhal, the original author of Node.
@@ -31,7 +33,11 @@ Deno is a new project from Ryan Dhal, the original author of Node.
 
 - Partial support with .mjs files
 
+---
+
 # Running Node code with Deno
+
+---
 
 ## Getting started
 
@@ -48,6 +54,8 @@ Or with PowerShell on Windows:
 irm https://deno.land/install.ps1 | iex
 ```
 
+---
+
 Then initialize a new project:
 
 ```bash
@@ -63,34 +71,22 @@ deno test
 deno fmt
 ```
 
+---
+
 You can also use `deno task` to run scripts defined in a `deno.json` file.
 
 ```bash
-deno task dev
+deno task slides
 ```
+
+This works like the scripts defined in `package.json` in Node.
+
+---
 
 If you're using VS Code, it's also a good idea to install
 [the official Deno extension](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno).
 
-## Using the Node API
-
-Node has
-[a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html),
-and
-[since Deno v1.15 a large portion of it is available in Deno](https://deno.land/manual@v1.26.0/node/std_node).
-
-The Node API is available in Deno by importing from the `node` module in the
-Deno standard library.
-
-```ts
-// node-stdlib.ts
-import { readFileSync } from "https://deno.land/std@0.158.0/node/fs.ts";
-import { stdout } from "https://deno.land/std@0.158.0/node/process.ts";
-
-const data = readFileSync("hello.txt", "utf8");
-
-stdout.write(data);
-```
+---
 
 ## Using packages from npm
 
@@ -115,10 +111,34 @@ app.listen(3000);
 console.log("listening on http://localhost:3000/");
 ```
 
-- Adding missing types
-- Using with projects that have `node_modules` already
-- Importing into `node_modules` (for vendoring and compat)
-- Reloading modules (all, some, or one)
+---
+
+## Using the Node API
+
+Node has
+[a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html)
+which provides access to the file system, network, and more.
+
+Though Deno uses Web APIs,
+[since v1.15 a large portion of the Node APIS are available in the Deno standard library](https://deno.land/manual@v1.26.0/node/std_node).
+
+You can access them by importing from the `node` module in the Deno standard
+library.
+
+```ts
+// node-stdlib.ts
+import { readFileSync } from "https://deno.land/std@0.158.0/node/fs.ts";
+import { stdout } from "https://deno.land/std@0.158.0/node/process.ts";
+
+const data = readFileSync("hello.txt", "utf8");
+
+stdout.write(data);
+```
+
+When you import an `npm` package, Deno automatically polyfills the Node API for
+you.
+
+---
 
 ## Creating apps
 
@@ -136,19 +156,44 @@ deno run -A --unstable npm:eslint your_file.js
 This is basically the same as using `npx` in Node since nothing needs to be
 downloaded or installed first.
 
-## Running project scripts
+---
 
-When you're using node, you can run scripts defined in your `package.json` file.
+## Problems you'll run into
 
-```bash
-npm run dev
+---
+
+### Missing types
+
+Most packages on npm are missing TypeScript types. You can use the `@types` npm
+packages to install third-party type definitions.
+
+```ts
+import express from "npm:express";
+import type {
+  Request,
+  Response,
+} from "https://esm.sh/@types/express/index.d.ts";
 ```
 
-With Deno, you run scripts defined in a `deno.json` file.
+These definitions are not always complete, and you may need to add your own.
+Pull requests are welcome!
 
-```bash
-deno task dev
-```
+---
+
+### Missing NAPI for loading native modules
+
+Some popular packages like `bcrypt` and `sharp` use native modules. These aren't
+currently supported in Deno, but work is underway to add support and the first
+version was
+[merged into the main branch on OCt 5, 2022](https://github.com/denoland/deno/pull/13633).
+
+---
+
+- Using with projects that have `node_modules` already
+- Importing into `node_modules` (for vendoring and compat)
+- Reloading modules (all, some, or one)
+
+---
 
 # Running Deno Code In Node
 
