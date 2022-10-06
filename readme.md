@@ -286,6 +286,26 @@ I'm guessing this will be a headline feature in Deno v1.27.
 
 # Problems You May Run Into
 
+## Incomplete Node Standard Library polyfills
+
+Though Deno has a large portion of the Node Standard Library available, it's not
+complete and work is on-going to add more.
+
+You can track progress on GitHub:
+
+- https://github.com/denoland/deno/issues/15960
+- https://github.com/denoland/deno/labels/node%20compat
+
+And there's a list of missing APIs in the Deno docs:
+
+- https://github.com/denoland/deno_std/blob/main/node/README.md
+
+They're always open to receiving new issues and pull requests!
+
+---
+
+# Problems You May Run Into
+
 ## Packages expect `node_modules`
 
 Some packages hard code `node_modules` into their source (bad!) and won't work
@@ -313,17 +333,24 @@ deno run --unstable --node-modules-dir chalk.ts
 
 ## Improving Node compatibility
 
-Going forward to the team is already working the target and track the next Node
-LTS release.
+Going forward to the team is already tracking the next Node LTS release. and
+working to get it's specs passing in Deno.
 
-NPM and Node API polyfills are continuing to evolve and improve.
-
-- https://github.com/denoland/deno_std/blob/main/node/README.md
-
-You can report issues and broken packages on GitHub.
+This is the tracking issue on GitHub:
 
 - https://github.com/denoland/deno/issues/15960
-- https://github.com/denoland/deno/labels/node%20compat
+
+---
+
+# What's Next
+
+## Ultimate goal: Deno as a Node replacement
+
+To get there the Deno team knows they need to have a graceful on-ramp for
+existing Node developers, and have committed to making it as easy as possible.
+
+Even if Deno doesn't become the next Node, simply pushing Node to better support
+standards and improve the developer experience is a win for everyone.
 
 ---
 
