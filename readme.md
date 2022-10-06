@@ -1,5 +1,4 @@
 ```
-       _            _            _             _                            _             _            _            _      
       /\ \         /\ \         /\ \     _    /\ \          _              /\ \     _    /\ \         /\ \         /\ \    
      /  \ \____   /  \ \       /  \ \   /\_\ /  \ \        /\ \           /  \ \   /\_\ /  \ \       /  \ \____   /  \ \   
     / /\ \_____\ / /\ \ \     / /\ \ \_/ / // /\ \ \    ___\ \_\         / /\ \ \_/ / // /\ \ \     / /\ \_____\ / /\ \ \  
@@ -31,15 +30,17 @@ Deno is a new project from Ryan Dhal, the original author of Node.
 | V8 engine             | ✅    | ✅    |
 | ES Modules            | 🟨 *  | ✅    |
 | Common.js             | ✅    | No   |
-| Web APIs              | No   | ✅    |
+| Web APIs              | 🟨 *  | ✅    |
 | Sandbox / Permissions | No   | ✅    |
 | TypeScript            | No   | ✅    |
 | Linter                | No   | ✅    |
 | Formatter             | No   | ✅    |
+| REPL                  | ✅    | ✅    |
 | npm / node_modules    | ✅    | No   |
-| Bundler               | No   | No   |
+| Bundler               | No   | ✅    |
 
 - Partial support with .mjs files
+- Fetch, Web Crypto, and a growing list of other APIs
 
 ---
 
@@ -74,12 +75,15 @@ Node and npm work seamlessly with Deno.
 
 ---
 
+# Running Node code with Deno
+
 ## Using packages from npm
 
 Using `npm` packages is easy!
 
-Just import packages using the `npm:` url schema and you're good to go! Never
-type `npm install --save` again!
+Just import packages using the `npm:` url schema and you're good to go!
+
+Never type `npm install --save` again!
 
 ```ts
 import ?? from "npm:<package-name>[@<version-requirement>]";
@@ -89,6 +93,8 @@ Packages are downloaded the first time you import them and cached across the
 system.
 
 ---
+
+# Running Node code with Deno
 
 ## Using packages from npm
 
@@ -108,13 +114,15 @@ console.log("listening on http://localhost:3000/");
 
 ---
 
-## Using the Node API
+# Running Node code with Deno
 
-Node has a large api which provides access to the file system, network, and
-more.
+## Using the Node Standard Library
 
-Though Deno uses Web APIs, since v1.15 a large portion of the Node APIS are
-available in the Deno standard library.
+Node has a large Standard Library which provides access to the file system,
+network, and more.
+
+Though Deno uses Web APIs, since v1.15 a large portion of the Node Standard
+Library is available in Deno.
 
 You can access them by importing from the `node` module in the Deno standard
 library.
@@ -134,6 +142,8 @@ you.
 
 ---
 
+# Running Node code with Deno
+
 ## Running Node binaries
 
 In Deno you run scripts from a url:
@@ -144,6 +154,8 @@ deno run https://deno.land/std/examples/welcome.ts
 ```
 
 ---
+
+# Running Node code with Deno
 
 ## Running Node binaries
 
@@ -165,6 +177,8 @@ downloaded or installed first.
   scripts.
 
 ---
+
+# Running Node code with Deno
 
 ## Replacing Node scripts
 
@@ -192,6 +206,42 @@ This works like the scripts defined in `package.json` in Node.
 
 ---
 
+# Running Node code with Deno
+
+## Using Import Maps to port Node source code
+
+When using imports with webpack and node, you can import packages using "bare"
+specifier (ie "react" or "lodash") and the bundler will resolve the package to
+the correct file.
+
+```ts
+// my-node-code.js
+import React from "react";
+import { map } from "lodash";
+```
+
+Deno doesn't have this feature, but you can use import maps to get the same
+behavior. They're a standard feature of the browser, which Deno now supports
+too.
+
+```json
+// import-map.json
+{
+  "imports": {
+    "react": "https://cdn.skypack.dev/react",
+    "react-dom": "https://cdn.skypack.dev/react-dom"
+  }
+}
+```
+
+Then just tell Deno about your import map when you run your code:
+
+```bash
+deno run --import-map ./import_map.json my-node-code.js
+```
+
+---
+
 # Problems You May Run Into
 
 ---
@@ -200,15 +250,15 @@ This works like the scripts defined in `package.json` in Node.
 
 ## Missing types
 
-Most packages on npm are missing TypeScript types. You can use the `@types` npm
-packages to install third-party type definitions.
+Most packages on npm are missing TypeScript types. This isn't specific to Deno,
+and you've likely running into it whenever you've used TypeScript with Node.
+
+You can use the `@types` npm packages to install third-party type definitions.
 
 ```ts
+// express-main.ts
 import express from "npm:express";
-import type {
-  Request,
-  Response,
-} from "https://esm.sh/@types/express/index.d.ts";
+import type { Request, Response } from "npm:@types/express";
 ```
 
 These definitions are not always complete, and you may need to add your own.
@@ -228,7 +278,7 @@ optimized in JavaScript.
 
 These aren't currently supported in Deno, but work is underway to add support
 and the first version was
-[merged into the main branch on OCt 5, 2022](https://github.com/denoland/deno/pull/13633).
+[merged into the main branch on Oct 5, 2022](https://github.com/denoland/deno/pull/13633).
 
 I'm guessing this will be a headline feature in Deno v1.27.
 
@@ -238,8 +288,8 @@ I'm guessing this will be a headline feature in Deno v1.27.
 
 ## Packages expect `node_modules`
 
-Some packages hard code `node_modules` into their source, and sometimes you want
-to vendor packages for deploying to production.
+Some packages hard code `node_modules` into their source (bad!) and won't work
+without it.
 
 Deno supports this using the `--node-modules-dir` flag.
 
@@ -334,6 +384,7 @@ https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
 
 - [Deno v1.2.5 Relase Notes](https://deno.com/blog/v1.25#experimental-npm-support)
 - [Deno v1.2.6 Release Notes](https://deno.com/blog/v1.26#improvements-to-npm-support)
+- [Interoperating with Node and NPM in the Deno Manual](https://deno.land/manual@v1.26.0/node)
 
 ---
 

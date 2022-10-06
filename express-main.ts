@@ -1,9 +1,6 @@
 // express-main.ts
 import express from "npm:express";
-import type {
-  Request,
-  Response,
-} from "https://esm.sh/@types/express/index.d.ts";
+import type { Request, Response } from "npm:@types/express";
 
 const app = express();
 
