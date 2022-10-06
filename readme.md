@@ -35,6 +35,33 @@ Deno is a new project from Ryan Dhal, the original author of Node.
 
 ---
 
+# Why Care About Deno?
+
+1. Fast and secure
+2. Betting on Web APIs will pay off
+3. Single executable with TS, linting, formatting, and testing
+
+Learn more at [deno.land](https://deno.land/)
+
+---
+
+# Hurdles To Adoption
+
+1. Most devs are happy with node
+2. Learning something new is hard
+3. The node/npm ecosystem is much bigger than Deno's
+
+Deno is addressing all of these, and really focused on developer experience.
+
+---
+
+# Hurdles To Adoption
+
+Today going to focus on how Deno is overcoming the third of these, by making
+Node and npm work seamlessly with Deno.
+
+---
+
 # Running Node code with Deno
 
 ---
@@ -54,9 +81,13 @@ Or with PowerShell on Windows:
 irm https://deno.land/install.ps1 | iex
 ```
 
+See https://deno.land/#installation for more detials.
+
 ---
 
-Then initialize a new project:
+## Getting started
+
+Quickly initialize a new project:
 
 ```bash
 deno init hello-node
@@ -73,6 +104,8 @@ deno fmt
 
 ---
 
+## Getting started
+
 You can also use `deno task` to run scripts defined in a `deno.json` file.
 
 ```bash
@@ -83,27 +116,35 @@ This works like the scripts defined in `package.json` in Node.
 
 ---
 
-If you're using VS Code, it's also a good idea to install
-[the official Deno extension](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno).
+## Getting started
+
+If you're using VS Code, it's also a good idea to install the official Deno
+extension.
+
+https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
 
 ---
 
 ## Using packages from npm
 
-Import packages using the `npm` schema. They are downloaded and cached across
-the system.
+Use `npm` packages is easy!
+
+Just import packages using the `npm` schema and you're good to go! Never type
+`npm install --save` again!
+
+They are downloaded the first time you import them and cached across the system.
+
+---
+
+## Using packages from npm
 
 ```ts
 // express-main.ts
 import express from "npm:express";
-import type {
-  Request,
-  Response,
-} from "https://esm.sh/@types/express/index.d.ts";
 
 const app = express();
 
-app.get("/", function (_req: Request, res: Response<string>) {
+app.get("/", function (_req: Request, res) {
   res.send("Hello World");
 });
 
@@ -115,12 +156,11 @@ console.log("listening on http://localhost:3000/");
 
 ## Using the Node API
 
-Node has
-[a large api](https://nodejs.org/dist/latest-v18.x/docs/api/documentation.html)
-which provides access to the file system, network, and more.
+Node has a large api which provides access to the file system, network, and
+more.
 
-Though Deno uses Web APIs,
-[since v1.15 a large portion of the Node APIS are available in the Deno standard library](https://deno.land/manual@v1.26.0/node/std_node).
+Though Deno uses Web APIs, since v1.15 a large portion of the Node APIS are
+available in the Deno standard library.
 
 You can access them by importing from the `node` module in the Deno standard
 library.
